@@ -1,0 +1,3 @@
+#ignore datetime timezone
+[tool.ruff.lint]
+ignore = ["DTZ005"]

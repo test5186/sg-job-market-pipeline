@@ -1,8 +1,9 @@
 from airflow.decorators import dag
-from airflow.operators.python import PythonOperator
 from airflow.operators.bash import BashOperator
+from airflow.operators.python import PythonOperator
 from pendulum import datetime, duration
-from include.sg import sg, last_page
+
+from include.sg import last_page, sg
 from include.sg_adzuna import extract_adzuna
 
 #How many tasks running concurrrently. 4 worker * 16task = max of 64task

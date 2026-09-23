@@ -1,9 +1,10 @@
-import requests
+import time
+from datetime import datetime
+
 import pandas as pd
+import requests
 from sqlalchemy import create_engine
 from sqlalchemy.dialects.postgresql import JSONB
-from datetime import datetime
-import time
 
 URL = "https://api.mycareersfuture.gov.sg/v2/jobs"
 

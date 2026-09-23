@@ -1,10 +1,11 @@
-import requests
+import os
+import time
+from datetime import datetime
+
 import pandas as pd
+import requests
 from sqlalchemy import create_engine
 from sqlalchemy.dialects.postgresql import JSONB
-from datetime import datetime
-import time
-import os
 
 APP_ID = os.environ["ADZUNA_APP_ID"]
 APP_KEY = os.environ["ADZUNA_APP_KEY"]
