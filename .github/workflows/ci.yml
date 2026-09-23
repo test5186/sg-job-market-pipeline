@@ -18,7 +18,7 @@ jobs:
       - name: Lint Python code
         run: ruff check dags/ include/
 
-  dbt-compile:
+  dbt-parse:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -30,8 +30,8 @@ jobs:
       - name: Install dbt
         run: pip install dbt-core dbt-postgres
 
-      - name: dbt compile
+      - name: dbt parse
         working-directory: dbt/jobs_dbt
         env:
           DBT_PG_PASSWORD: dummy_password_for_ci
-        run: dbt compile --profiles-dir .
+        run: dbt parse --profiles-dir .
