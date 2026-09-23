@@ -1,0 +1,34 @@
+version: 2
+
+models:
+  - name: deduplicate_model
+    columns:
+      - name: uuid
+        data_tests:
+          - unique
+          - not_null
+
+  - name: adzuna_deduplicate
+    columns:
+      - name: uuid
+        data_tests:
+          - unique
+          - not_null
+
+  - name: sg_complete
+    columns:
+      - name: uuid
+        data_tests:
+          - unique
+          - not_null
+
+  - name: combine
+    columns:
+      - name: uuid
+        data_tests:
+          - not_null
+      - name: source
+        data_tests:
+          - not_null
+          - accepted_values:
+              values: ['mycareersfuture', 'adzuna']

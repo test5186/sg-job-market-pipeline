@@ -1,0 +1,23 @@
+version: 2
+
+sources:
+  - name: sg_raw
+    schema: public
+    tables:
+      - name: raw_jobs
+        description: "Raw job listings data from MyCareersFuture, loaded via Airflow"
+        columns:
+          - name: uuid
+            description: "Unique identifier for each job posting"
+            data_tests:
+              - not_null
+  - name: adzuna_raw
+    schema: public
+    tables:
+      - name: adzuna_jobs
+        description: "Raw job listings data from Adzuna, loaded via Airflow"
+        columns:
+          - name: id
+            description: "Unique identifier for each job posting"
+            data_tests:
+              - not_null

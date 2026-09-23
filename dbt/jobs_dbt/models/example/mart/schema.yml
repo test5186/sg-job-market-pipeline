@@ -1,0 +1,17 @@
+version: 2
+
+models:
+  - name: data_jobs
+    columns:
+      - name: title
+        data_tests:
+          - not_null
+      - name: company_name
+        data_tests:
+          - not_null
+
+  - name: skills
+    columns:
+      - name: skill
+        data_tests:
+          - not_null

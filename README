@@ -1,0 +1,12 @@
+docker compose --profile flower up -d
+docker compose --profile flower down
+
+docker compose --profile flower up -d --scale airflow-worker=4
+docker compose --profile flower up -d --force-recreate --scale airflow-worker=4
+
+
+docker compose exec airflow-scheduler airflow tasks clear extract -y
+
+docker compose exec airflow-scheduler airflow dags trigger extract
+
+docker compose exec airflow-scheduler airflow tasks states-for-dag-run extract manual__2026-09-04T07:56:41.462052+00:00 -o table | grep -oE '\b(scheduled|running|success|failed|queued)\b' | sort | uniq -c
