@@ -1,6 +1,5 @@
 import time
 from datetime import datetime
-
 import pandas as pd
 import requests
 from sqlalchemy import create_engine
@@ -9,8 +8,6 @@ from sqlalchemy.dialects.postgresql import JSONB
 URL = "https://api.mycareersfuture.gov.sg/v2/jobs"
 
 def last_page() -> int:
-
-
     for attempt in range(3):
         response = requests.get(URL)
         if response.status_code == 200 and response.text.strip():
@@ -23,8 +20,7 @@ def last_page() -> int:
     else:
         raise RuntimeError("Failed to fetch last_page after retries")
     
-    # response = requests.get(URL)
-    # data = response.json()
+    
     href = data["_links"]["last"]["href"]
     end_page = href.split("page=")[1].split("&")[0]
 
@@ -60,13 +56,12 @@ def sg(chunk_index:int, num_chunks: int, ti=None):
                     break
                 except ValueError:
                     pass
-            time.sleep((attempt + 1) * 10 * 60)  # 10min, 20min, 30min
+            time.sleep((attempt + 1) * 10 * 60)  # 10min, 20min, 30min (rate-limited)
         else:
             print(f"[chunk {chunk_index}] page {page} failed after retries, skipping")
             continue
 
-        # response = requests.get(URL, params=params)
-        # data=response.json()
+        
 
         result = data.get("results",[])
 
@@ -80,8 +75,6 @@ def sg(chunk_index:int, num_chunks: int, ti=None):
         df["extracted_at"] = datetime.now()
 
         dtype_map = {}
-
-        #Check if value is a list or dict
 
         #select columns with object types
         for col in df.select_dtypes(include="object").columns:

@@ -1,7 +1,6 @@
 import os
 import time
 from datetime import datetime
-
 import pandas as pd
 import requests
 from sqlalchemy import create_engine
@@ -38,9 +37,10 @@ def extract_adzuna():
     all_results =[]
     engine = create_engine("postgresql+psycopg2://airflow:airflow@postgres:5432/airflow")
 
+    # Adzuna caps results_per_page at 50 regardless of what's requested
     data=fetch_page(1)
     total_count = data["count"]
-    total_pages = -(-total_count // 50)
+    total_pages = -(-total_count // 50) #-240 ÷ 50 = -(-4.8) = -(-5) = 5
 
     for page_number in range  (1,total_pages+1):
 
@@ -52,7 +52,6 @@ def extract_adzuna():
         time.sleep(0.3)
 
     df = pd.DataFrame(all_results)
-
 
     df["extracted_at"] = datetime.now()
     

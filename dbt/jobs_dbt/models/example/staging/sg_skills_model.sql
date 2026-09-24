@@ -1,3 +1,5 @@
+-- Materialized as a table (not the default view): as a view, this JSONB 
+-- unnest+aggregate gets re-executed per query
 {{ config(materialized='table') }}
 
 with source as (

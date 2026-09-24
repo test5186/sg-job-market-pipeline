@@ -20,9 +20,9 @@ adzuna as (
     select
         uuid,
         title,
-        null as skills,
+        null as skills, -- Adzuna doesn't have skill list
         category as all_category,
-        cast(null as bigint) as min_experience,
+        cast(null as bigint) as min_experience, --sg.min_experience is bigint, untyped null would fail the union
         employment_types,
         null as status,
         company_name,
@@ -43,10 +43,10 @@ combined as (
 deduped as (
     select *,
     row_number() over (
-        partition by lower(trim(company_name)), lower(trim(title))
-        order by
+        -- catches the same posting scraped from both sources if both company name and title is the same
+        partition by lower(trim(company_name)), lower(trim(title)) 
             case 
-                when source = 'mycareersfuture' then 0 
+                when source = 'mycareersfuture' then 0  -- prefer MCF
                 else 1 
             end,
             extracted_at desc

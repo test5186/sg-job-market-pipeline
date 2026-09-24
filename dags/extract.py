@@ -6,7 +6,7 @@ from pendulum import datetime, duration
 from include.sg import last_page, sg
 from include.sg_adzuna import extract_adzuna
 
-#How many tasks running concurrrently. 4 worker * 16task = max of 64task
+# Job listings split across NUM_CHUNKS parallel scrape tasks (for sg.py)
 NUM_CHUNKS = 50
 
 @dag(
@@ -17,15 +17,10 @@ NUM_CHUNKS = 50
     tags = ["Extraction"],
     default_args = {
         "retries":1,
-        # "retry_delay": duration(minutes=5),
-        # "retry_exponential_backoff" : True,
-        # "max_retry_delay":  duration(hours=1)
         },
     dagrun_timeout = duration(minutes=600),
     max_consecutive_failed_dag_runs = 2,
     max_active_runs = 1,
-    # on_failure_callback = _handle_failure,
-    # on_success_callback = _handle_failure
 )
 
 def extract():
@@ -34,7 +29,8 @@ def extract():
         task_id = 'last_page',
         python_callable = last_page
         )
-    
+
+    # Collect every chunk task so all 50 can be wired to dbt_build at once
     chunk_tasks = []
     for i in range (NUM_CHUNKS):
         chunk_task = PythonOperator (

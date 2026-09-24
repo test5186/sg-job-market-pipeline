@@ -11,6 +11,7 @@ sources:
             description: "Unique identifier for each job posting"
             data_tests:
               - not_null
+              
   - name: adzuna_raw
     schema: public
     tables:
